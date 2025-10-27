@@ -6,14 +6,13 @@ import lombok.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
 @Builder
 @Entity
 @Table(name = "tb_product")
@@ -30,8 +29,10 @@ public class Product implements Serializable {
     private String imageUrl;
 
     @Setter(AccessLevel.NONE)
-    @Builder.Default
-    @Transient
+    @ManyToMany
+    @JoinTable(name = "tb_products_id",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
     public Product(Long id, String name, String description, Double price, String imageUrl) {
@@ -40,5 +41,17 @@ public class Product implements Serializable {
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(getId(), product.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
     }
 }
