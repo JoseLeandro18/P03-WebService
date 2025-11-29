@@ -2,6 +2,7 @@ package com.projetopessoal.p03webservice.entities;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projetopessoal.p03webservice.entities.pk.OrderItemPK;
 
 import jakarta.persistence.EmbeddedId;
